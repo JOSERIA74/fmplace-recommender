@@ -2,59 +2,58 @@
 from flask import Flask, request, jsonify
 import pandas as pd
 import numpy as np
+import json
 
 app = Flask(__name__)
 
-# === Load data once at startup ===
+# Cargar matriz de puntuación y vector de ponderación
+df_excel = pd.read_excel("Matriz Score-Vector Ponderacion-Respuestas Index.xlsx", sheet_name=None)
 
-EXCEL_PATH = "Matriz Score-Vector Ponderacion-Respuestas Index.xlsx"
+matriz_df = df_excel["Matriz Score"]
+ponderacion_df = df_excel["Vector Ponderacion"]
 
-df_score = pd.read_excel(EXCEL_PATH, sheet_name="Matriz Score", index_col=0)
-df_weights = pd.read_excel(EXCEL_PATH, sheet_name="Vector Ponderacion", header=None).iloc[:, 0]
-df_mapping = pd.read_excel(EXCEL_PATH, sheet_name="Mapping Respuestas")
+# Cargar el mapeo válido de preguntas y respuestas
+with open("mapping_respuestas.json") as f:
+    valid_mappings = json.load(f)
 
-tools = df_score.columns.tolist()
-num_options = len(df_score)
+# Preprocesar matriz
+matriz_df = matriz_df.fillna(0)
+tools = matriz_df.columns[3:]
+matriz_puntajes = matriz_df[tools].to_numpy()
+ponderacion_vector = ponderacion_df["Ponderación"].to_numpy()
 
-# === Build mapping: (question, option) -> index in score matrix ===
-
-mapping_dict = {
-    (row["Pregunta (ENG)"], row["Opción de Respuesta (ENG)"]): row["Index"]
-    for _, row in df_mapping.iterrows()
-}
+# Crear diccionario índice para rápido acceso
+index_mapping = dict(((row["Pregunta (ENG)"], row["Opción de Respuesta (ENG)"]), idx) for idx, row in matriz_df.iterrows())
 
 @app.route("/recommend", methods=["POST"])
 def recommend():
     data = request.get_json()
 
-    if "responses" not in data:
-        return jsonify({"error": "Missing 'responses' in request"}), 400
+    if "respuestas" not in data:
+        return jsonify({"error": "Missing 'respuestas' in request"}), 400
 
-    responses = data["responses"]
-    vector = np.zeros(num_options)
+    respuestas = data["respuestas"]
+    user_vector = np.zeros(matriz_puntajes.shape[0])
 
-    for question, answer in responses.items():
-        key = (question, answer)
-        if key not in mapping_dict:
-            return jsonify({"error": f"No mapping found for: {question} → {answer}"}), 400
-        idx = mapping_dict[key]
-        vector[idx] = 1.0
+    for pregunta, opcion in respuestas.items():
+        if pregunta not in valid_mappings or opcion not in valid_mappings[pregunta]:
+            return jsonify({"error": f"No mapping found for: {pregunta} → {opcion}"}), 400
+        key = (pregunta, opcion)
+        idx = index_mapping.get(key)
+        if idx is not None:
+            user_vector[idx] = 1
 
-    # Apply weights
-    weighted_vector = vector * df_weights.values
+    ponderado_vector = user_vector * ponderacion_vector
+    scores = np.dot(ponderado_vector, matriz_puntajes)
 
-    # Compute similarity score (dot product)
-    scores = df_score.T.dot(weighted_vector)
-
-    ranking = scores.sort_values(ascending=False).reset_index()
-    ranking.columns = ["tool", "score"]
-
-    return jsonify({
-        "top_1": ranking.iloc[0]["tool"],
-        "top_2": ranking.iloc[1]["tool"],
-        "top_3": ranking.iloc[2]["tool"],
-        "ranking": ranking.to_dict(orient="records")
-    })
+    ranking = sorted(zip(scores, tools), reverse=True)
+    resultado = {
+        "ranking": [{"tool": tool, "score": float(score)} for score, tool in ranking],
+        "top_1": ranking[0][1],
+        "top_2": ranking[1][1],
+        "top_3": ranking[2][1]
+    }
+    return jsonify(resultado)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)

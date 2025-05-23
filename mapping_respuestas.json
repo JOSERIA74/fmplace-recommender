@@ -1,0 +1,89 @@
+{
+  "What is the size of your company?": [
+    "1-10 employees",
+    "11-50 employees",
+    "51-200 employees",
+    "201-1,000 employees",
+    "More than 1,000 employees"
+  ],
+  "What is your annual budget?": [
+    "<10K USD/year",
+    "10K-30K USD/year",
+    "30K-60K USD/year",
+    "60K-100K USD/year",
+    "More than 100K USD/year"
+  ],
+  "Preferred Pricing Structure": [
+    "Pay per user",
+    "Fixed monthly plan",
+    "Scalable based on usage"
+  ],
+  "How soon do you need to implement the tool?": [
+    "Less than 1 day (plug & play)",
+    "1\u20132 weeks",
+    "1-2 months",
+    "More than 2 months"
+  ],
+  "What is the relationship of the tool to Excel in your use case?": [
+    "I require it to function as an add-in within Excel",
+    "I prefer native integration with Excel while maintaining independence",
+    "I'm seeking a solution entirely independent of Excel",
+    "This is not a significant factor for me"
+  ],
+  "What systems do you need to integrate with the FP&A tool?": [
+    "ERP systems (e.g., NetSuite, SAP, Sage, Workday)",
+    "CRM platforms (e.g., Salesforce, HubSpot)",
+    "HRIS / Payroll systems (e.g., Workday, BambooHR)",
+    "Business Intelligence tools (e.g., Power BI, Tableau, Looker)",
+    "Data Warehouses (e.g., Snowflake, BigQuery, Redshift)",
+    "Google Sheets / Excel",
+    "Other"
+  ],
+  "What are the key use cases for which you need the tool?": [
+    "Budgeting & Forecasting: Budget creation, rolling forecasts, monthly/quarterly planning.",
+    "Reporting & Dashboards: Financial reports, key performance indicators (KPIs), visualizations",
+    "Variance Analysis & Scenario Planning: Deviation analysis, what-if scenarios, multi-scenario planning",
+    "Workforce Planning & Headcount Forecasting: Staffing plans, personnel cost forecasting.",
+    "Sales & Revenue Forecasting: Revenue projections, sales modeling, sales quota management.",
+    "Cash Flow & Liquidity Planning: Cash flow analysis, liquidity forecasting",
+    "Cost Planning & OpEx Management: Operational expenditure management, budgetary control"
+  ],
+  "Reporting needs": [
+    "Customizable dashboards",
+    "Executive reports with drill-down capabilities",
+    "Interactive visual analysis",
+    "Export to PowerPoint/PDF"
+  ],
+  "What level of modeling capability do you need?": [
+    "Basic: Simple structures (additions, subtractions), no multi-dimensionality",
+    "Intermediate: Multi-dimensional models with logical data dependencies",
+    "Advanced: Multiple dimensions and attributes, custom drivers, complex calculations",
+    "Enterprise-Level: Unlimited dimensional capacity, high scalability, advanced automation"
+  ],
+  "Collaboration and workflows needs": [
+    "None: I\u2019ll be the only user of the tool",
+    "Basic: Share data with others, manual editing",
+    "Intermediate: Approval workflows, cell comments, change tracking",
+    "Advanced: Permission management, task automation, multiple teams collaborating in real time"
+  ],
+  "What IA capabilities are important to you?": [
+    "AI Forecasting & Statistical Models: Automatically generate forecasts using machine learning",
+    "AI Variance Analysis: Automatically explain deviations from budget",
+    "AI Scenario Planning: Automatically create what-if scenarios based on assumption changes",
+    "AI Anomaly Detection: Automatically identify errors or unusual data deviations",
+    "AI Reporting & Insights: Auto-generated summaries and reports",
+    "AI Querying (Natural Language Q&A): Ask questions and retrieve metrics using natural language",
+    "I don\u2019t need AI capabilities at the moment"
+  ],
+  "Scalability and ability to handle large volumes of data": [
+    "Low: Less than 50K rows of data",
+    "Intermediate: 50K \u2013 1M rows of data",
+    "High: 1M \u2013 10M rows of data",
+    "Enterprise-Level: Over 10M rows, integration with data lakes"
+  ],
+  "Preferred implementation type": [
+    "SaaS / Cloud: Web-based access, no installation required",
+    "On-Premise: Hosted on internal infrastructure",
+    "Hybrid: Combination of cloud and on-premise options"
+  ]
+}
