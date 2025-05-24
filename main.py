@@ -2,51 +2,42 @@
 from flask import Flask, request, jsonify
 import pandas as pd
 import numpy as np
-import json
 
 app = Flask(__name__)
 
-# Cargar matriz de puntuación y vector de ponderación
-df_excel = pd.read_excel("Matriz Score-Vector Ponderacion-Respuestas Index.xlsx", sheet_name=None)
+# Cargar datos
+excel = pd.read_excel("Matriz Score-Vector Ponderacion-Respuestas Index.xlsx", sheet_name=None)
+matriz = excel["Matriz Score"]
+ponderacion = excel["Vector Ponderacion"]
 
-matriz_df = df_excel["Matriz Score"]
-ponderacion_df = df_excel["Vector Ponderacion"]
-
-# Cargar el mapeo válido de preguntas y respuestas
-with open("mapping_respuestas.json") as f:
-    valid_mappings = json.load(f)
-
-# Preprocesar matriz
-matriz_df = matriz_df.fillna(0)
-tools = matriz_df.columns[3:]
-matriz_puntajes = matriz_df[tools].to_numpy()
-ponderacion_vector = ponderacion_df["Ponderación"].to_numpy()
-
-# Crear diccionario índice para rápido acceso
-index_mapping = dict(((row["Pregunta (ENG)"], row["Opción de Respuesta (ENG)"]), idx) for idx, row in matriz_df.iterrows())
+# Construir matriz de puntuaciones
+tools = matriz.columns[3:]
+matriz_puntajes = matriz[tools].fillna(0).to_numpy()
+ponderacion_vector = ponderacion["Ponderación"].to_numpy()
 
 @app.route("/recommend", methods=["POST"])
 def recommend():
     data = request.get_json()
+    respuestas = data.get("vector", [])
 
-    if "respuestas" not in data:
-        return jsonify({"error": "Missing 'respuestas' in request"}), 400
+    # Inicializar vector binario de longitud igual al número de filas de la matriz
+    vector_usuario = np.zeros(matriz_puntajes.shape[0])
 
-    respuestas = data["respuestas"]
-    user_vector = np.zeros(matriz_puntajes.shape[0])
+    try:
+        for idx in respuestas:
+            index = int(idx)
+            if 0 <= index < len(vector_usuario):
+                vector_usuario[index] = 1
+    except Exception as e:
+        return jsonify({"error": f"Invalid input vector: {e}"}), 400
 
-    for pregunta, opcion in respuestas.items():
-        if pregunta not in valid_mappings or opcion not in valid_mappings[pregunta]:
-            return jsonify({"error": f"No mapping found for: {pregunta} → {opcion}"}), 400
-        key = (pregunta, opcion)
-        idx = index_mapping.get(key)
-        if idx is not None:
-            user_vector[idx] = 1
+    # Aplicar ponderación
+    ponderado = vector_usuario * ponderacion_vector
 
-    ponderado_vector = user_vector * ponderacion_vector
-    scores = np.dot(ponderado_vector, matriz_puntajes)
-
+    # Calcular score por herramienta
+    scores = np.dot(ponderado, matriz_puntajes)
     ranking = sorted(zip(scores, tools), reverse=True)
+
     resultado = {
         "ranking": [{"tool": tool, "score": float(score)} for score, tool in ranking],
         "top_1": ranking[0][1],
