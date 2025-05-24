@@ -1,18 +1,14 @@
-
 from flask import Flask, request, jsonify
 import pandas as pd
 import numpy as np
 
 app = Flask(__name__)
 
-# Load the Excel file with multiple sheets
+# Carga el archivo Excel con las tres hojas necesarias
 excel_path = "matriz.xlsx"
 df_scores = pd.read_excel(excel_path, sheet_name="Matriz Score")
 df_weights = pd.read_excel(excel_path, sheet_name="Vector Ponderacion", index_col=0)
 df_mapping = pd.read_excel(excel_path, sheet_name="Respuestas Index")
-
-# Create the mapping dictionary from response_id to row index
-mapping_dict = dict(zip(df_mapping["Respuesta ID"], df_mapping["Index"]))
 
 @app.route("/recommend", methods=["POST"])
 def recommend():
@@ -22,21 +18,24 @@ def recommend():
         return jsonify({"error": "Missing 'responses' in request"}), 400
 
     try:
-        user_response_ids = data["responses"]
-        user_vector = np.zeros(len(df_scores), dtype=int)
-        for response_id in user_response_ids:
-            idx = mapping_dict.get(response_id)
-            if idx is not None:
+        response_indices = data["responses"]  # Ejemplo: [1, 8, 13, ...]
+        num_rows = len(df_scores)
+
+        # Vector binario del usuario
+        user_vector = np.zeros(num_rows, dtype=int)
+        for idx in response_indices:
+            if 0 <= idx < num_rows:
                 user_vector[idx] = 1
 
-        # Apply weights
+        # Aplicar ponderaciones
         weights = df_weights["Peso"].values
         weighted_vector = user_vector * weights
 
-        # Compute scores
-        score_matrix = df_scores.iloc[:, 3:].values
+        # Calcular scores para cada herramienta
+        score_matrix = df_scores.iloc[:, 3:].values  # columnas con herramientas
         tool_scores = score_matrix.T @ weighted_vector
         tools = df_scores.columns[3:]
+
         ranking = sorted(zip(tools, tool_scores), key=lambda x: x[1], reverse=True)
 
         response = {
