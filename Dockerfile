@@ -8,6 +8,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # ✅ Línea clave para incluir el Excel
-COPY Matriz\ Score-Vector\ Ponderacion-Respuestas\ Index.xlsx .
+COPY matriz.xlsx .
 
 CMD ["python", "main.py"]
