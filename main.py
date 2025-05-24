@@ -6,7 +6,7 @@ import numpy as np
 app = Flask(__name__)
 
 # Load the Excel file with multiple sheets
-excel_path = "Matriz Score-Vector Ponderacion-Respuestas Index.xlsx"
+excel_path = "matriz.xlsx"
 df_scores = pd.read_excel(excel_path, sheet_name="Matriz Score")
 df_weights = pd.read_excel(excel_path, sheet_name="Vector Ponderacion", index_col=0)
 df_mapping = pd.read_excel(excel_path, sheet_name="Respuestas Index")
