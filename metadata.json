@@ -1,0 +1,29 @@
+{
+  "tools": {
+    "pigment": "Pigment",
+    "cube": "Cube",
+    "abacum": "Abacum",
+    "acterys": "Acterys",
+    "anaplan": "Anaplan",
+    "datarails": "Datarails",
+    "drivetrain": "Drivetrain",
+    "jirav": "Jirav",
+    "mosaic": "Mosaic",
+    "vena": "Vena"
+  },
+  "questions": {
+    "q1_size": "What is the size of your company?",
+    "q2_budget": "What is your annual budget?",
+    "q3_pricing": "Preferred Pricing Structure",
+    "q4_time": "How soon do you need to implement the tool?",
+    "q5_excel": "What is the relationship of the tool to Excel in your use case?",
+    "q6_integrations": "What systems do you need to integrate with the FP&A tool?",
+    "q7_cases": "What are the key use cases for which you need the tool?",
+    "q8_reporting": "Reporting needs",
+    "q9_modeling": "What level of modeling capability do you need?",
+    "q10_collaboration": "Collaboration and workflows needs",
+    "q11_ia": "What IA capabilities are important to you?",
+    "q12_scalability": "Scalability and ability to handle large volumes of data",
+    "q13_implementation": "Preferred implementation type"
+  }
+}
