@@ -40,11 +40,20 @@ for _, r in df_justs.iterrows():
         "options": {}
     })["options"][oi] = r["option_justification"]
 
-# 6) Build metadata JSON
-meta_tools = df_tools.set_index("tool_key")["tool_name"].to_dict()
+# 6) Build metadata JSON (with URLs)
+#    Extract both tool_name and tool_url
+meta_tools = {}
+for _, row in df_tools.iterrows():
+    key = row["tool_key"]
+    meta_tools[key] = {
+        "name": row["tool_name"],
+        "url":  row.get("tool_url", "")
+    }
+
 meta_questions = xls.parse("Questions", dtype=str).set_index("question_code")["question_label"].to_dict()
+
 metadata = {
-    "tools": meta_tools,
+    "tools":     meta_tools,
     "questions": meta_questions
 }
 
