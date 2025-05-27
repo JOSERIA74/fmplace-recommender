@@ -55,5 +55,94 @@
     "q11_ia": "What IA capabilities are important to you?",
     "q12_scalability": "Scalability and ability to handle large volumes of data",
     "q13_implementation": "Preferred implementation type"
+  },
+  "options": {
+    "q1_size": {
+      "0": "1-10 employees",
+      "1": "11-50 employees",
+      "2": "51-200 employees",
+      "3": "201-1,000 employees",
+      "4": "More than 1,000 employees"
+    },
+    "q2_budget": {
+      "5": "<10K USD/year",
+      "6": "10K-30K USD/year",
+      "7": "30K-60K USD/year",
+      "8": "60K-100K USD/year",
+      "9": "More than 100K USD/year"
+    },
+    "q3_pricing": {
+      "10": "Pay per user",
+      "11": "Fixed monthly plan",
+      "12": "Scalable based on usage"
+    },
+    "q4_time": {
+      "13": "Less than 1 day (plug & play)",
+      "14": "1–2 weeks",
+      "15": "1-2 months",
+      "16": "More than 2 months"
+    },
+    "q5_excel": {
+      "17": "I require it to function as an add-in within Excel",
+      "18": "I prefer native integration with Excel while maintaining independence",
+      "19": "I'm seeking a solution entirely independent of Excel",
+      "20": "This is not a significant factor for me"
+    },
+    "q6_integrations": {
+      "21": "ERP systems (e.g., NetSuite, SAP, Sage, Workday)",
+      "22": "CRM platforms (e.g., Salesforce, HubSpot)",
+      "23": "HRIS / Payroll systems (e.g., Workday, BambooHR)",
+      "24": "Business Intelligence tools (e.g., Power BI, Tableau, Looker)",
+      "25": "Data Warehouses (e.g., Snowflake, BigQuery, Redshift)",
+      "26": "Google Sheets / Excel",
+      "27": "Other"
+    },
+    "q7_cases": {
+      "28": "Budgeting & Forecasting: Budget creation, rolling forecasts, monthly/quarterly planning.",
+      "29": "Reporting & Dashboards: Financial reports, key performance indicators (KPIs), visualizations",
+      "30": "Variance Analysis & Scenario Planning: Deviation analysis, what-if scenarios, multi-scenario planning",
+      "31": "Workforce Planning & Headcount Forecasting: Staffing plans, personnel cost forecasting.",
+      "32": "Sales & Revenue Forecasting: Revenue projections, sales modeling, sales quota management.",
+      "33": "Cash Flow & Liquidity Planning: Cash flow analysis, liquidity forecasting",
+      "34": "Cost Planning & OpEx Management: Operational expenditure management, budgetary control"
+    },
+    "q8_reporting": {
+      "35": "Customizable dashboards",
+      "36": "Executive reports with drill-down capabilities",
+      "37": "Interactive visual analysis",
+      "38": "Export to PowerPoint/PDF"
+    },
+    "q9_modeling": {
+      "39": "Basic: Simple structures (additions, subtractions), no multi-dimensionality",
+      "40": "Intermediate: Multi-dimensional models with logical data dependencies",
+      "41": "Advanced: Multiple dimensions and attributes, custom drivers, complex calculations",
+      "42": "Enterprise-Level: Unlimited dimensional capacity, high scalability, advanced automation"
+    },
+    "q10_collaboration": {
+      "43": "None: I’ll be the only user of the tool",
+      "44": "Basic: Share data with others, manual editing",
+      "45": "Intermediate: Approval workflows, cell comments, change tracking",
+      "46": "Advanced: Permission management, task automation, multiple teams collaborating in real time"
+    },
+    "q11_ia": {
+      "47": "AI Forecasting & Statistical Models: Automatically generate forecasts using machine learning",
+      "48": "AI Variance Analysis: Automatically explain deviations from budget",
+      "49": "AI Scenario Planning: Automatically create what-if scenarios based on assumption changes",
+      "50": "AI Anomaly Detection: Automatically identify errors or unusual data deviations",
+      "51": "AI Reporting & Insights: Auto-generated summaries and reports",
+      "52": "AI Querying (Natural Language Q&A): Ask questions and retrieve metrics using natural language",
+      "53": "I don’t need AI capabilities at the moment"
+    },
+    "q12_scalability": {
+      "54": "Low: Less than 50K rows of data",
+      "55": "Intermediate: 50K – 1M rows of data",
+      "56": "High: 1M – 10M rows of data",
+      "57": "Enterprise-Level: Over 10M rows, integration with data lakes"
+    },
+    "q13_implementation": {
+      "58": "SaaS / Cloud: Web-based access, no installation required",
+      "59": "On-Premise: Hosted on internal infrastructure",
+      "60": "Hybrid: Combination of cloud and on-premise options"
+    }
   }
 }
