@@ -9,36 +9,29 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # 1️⃣ Checkout the repo and persist credentials so we can push later
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          persist-credentials: true     # allows git push using GITHUB_TOKEN
+          persist-credentials: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      # 2️⃣ Set up Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
-      # 3️⃣ Install pandas & openpyxl
       - name: Install dependencies
         run: pip install pandas openpyxl
 
-      # 4️⃣ Run the conversion script
       - name: Generate JSON
         run: python excel_to_json.py
 
-      # 5️⃣ Commit & push the updated JSON files (if any)
       - name: Commit JSON files
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # include adjustments.json if you generate it
           git add metadata.json scores.json weights.json justifications.json adjustments.json || true
           git commit -m "chore: update JSON configs from Excel" || echo "No changes to commit"
           git push
-
