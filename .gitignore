@@ -1,8 +1,9 @@
 # Ignorar JSONs generados por excel_to_json.py
 *.json
 
-# Ignorar PNGs de los análisis
+# Ignorar PNGs y JPG de los análisis
 *.png
+*.jpg
 
 # (Opcional) Ignorar carpetas de Python
 __pycache__/
