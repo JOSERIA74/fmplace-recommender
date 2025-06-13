@@ -2,3 +2,5 @@ pandas
 numpy
 openpyxl
 flask
+scikit-learn
+matplotlib
