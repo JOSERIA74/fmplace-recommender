@@ -1,5 +1,5 @@
 # Ignorar JSONs generados por excel_to_json.py
-*.json
+#*.json
 
 # Ignorar PNGs y JPG de los análisis
 *.png
