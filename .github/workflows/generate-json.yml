@@ -1,20 +1,26 @@
-# .github/workflows/generate-json.yml
 name: Generate JSON from Excel
 
+# Dispara al hacer push en estos archivos o manualmente desde GitHub UI
 on:
   push:
     paths:
-      - 'config_recomendador.xlsx'
-      - 'excel_to_json.py'
-      - '.github/workflows/generate-json.yml'
-      - 'adjustments.json'
+      - 'config_recomendador.xlsx'            # tu Excel
+      - 'excel_to_json.py'                    # el script
+      - '.github/workflows/generate-json.yml' # el propio workflow
+      - 'adjustments.json'                    # si lo tienes
+  workflow_dispatch:                          # para lanzar manualmente
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          # necesitamos todo el historial para hacer commit+push
+          fetch-depth: 0
+          # usar GITHUB_TOKEN para push
+          persist-credentials: true
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -31,7 +37,9 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -f metadata.json scores.json weights.json justifications.json adjustments.json
-          git commit -m "Update JSON configs from Excel" || echo "No changes to commit"
+          # forzamos el add de los JSON aunque estén en .gitignore
+          git add -f metadata.json scores.json weights.json justifications.json adjustments.json || true
+          git commit -m "ci: update JSON configs from Excel" || echo "No changes to commit"
           git push
+
 
