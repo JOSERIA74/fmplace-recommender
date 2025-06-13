@@ -1,6 +1,7 @@
-from flask import Flask, request, jsonify
+import os
 import json
 import math
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
@@ -19,16 +20,15 @@ with open("metadata.json", encoding="utf-8") as f:
 # List of all tool keys
 tools_list = list(metadata["tools"].keys())
 
-
 @app.route("/")
 def health():
     return "OK"
 
-
 @app.route("/recommend", methods=["POST"])
 def recommend():
     data = request.get_json(force=True)
-    responses = data.get("responses", {})
+    # If your payload nests under "responses", adjust here:
+    responses = data.get("responses", data)
 
     # 1) Base score: weighted sum (score * weight_factor)
     tool_scores = {tk: 0.0 for tk in tools_list}
@@ -37,11 +37,8 @@ def recommend():
         row = scores.get(oi_str)
         if not row or row.get("question_code") != qc:
             continue
-        weight = weights.get(qc, 1.0)
-        if weight is None:
-            weight = 0.0
+        weight = weights.get(qc, 1.0) or 0.0
         for tk, sc in row.get("scores", {}).items():
-            # Ensure sc is numeric
             try:
                 sc_val = float(sc)
             except (TypeError, ValueError):
@@ -51,9 +48,8 @@ def recommend():
     # 2) Apply per-tool adjustments (treat NaN as 0)
     for tk, tool_adj in adjustments.items():
         for qc, opts in tool_adj.items():
-            oi_str = str(responses.get(qc))
+            oi_str = str(responses.get(qc, ""))
             raw_bonus = opts.get(oi_str, 0)
-            # Convert possible NaN to 0
             try:
                 bonus = float(raw_bonus)
                 if math.isnan(bonus):
@@ -74,6 +70,8 @@ def recommend():
     }
     return jsonify(result)
 
-
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=3000)
+    # Toma el puerto desde la variable de entorno PORT (heredada de Replit),
+    # o usa 3000 si no está definida.
+    port = int(os.environ.get("PORT", 3000))
+    app.run(host="0.0.0.0", port=port)
