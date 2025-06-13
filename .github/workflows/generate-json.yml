@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'config_recomendador.xlsx'
+      - '.github/workflows/generate-json.yml'
 
 jobs:
   build:
