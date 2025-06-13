@@ -1,6 +1,11 @@
 name: Generate JSON from Excel
 
 # Dispara al hacer push en estos archivos o manualmente desde GitHub UI
+# permisos explícitos para el token
+
+permissions:
+  contents: write   # autoriza push sobre el repo
+  
 on:
   push:
     paths:
