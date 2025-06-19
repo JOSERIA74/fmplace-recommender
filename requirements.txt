@@ -4,3 +4,4 @@ openpyxl
 flask
 scikit-learn
 matplotlib
+joblib
